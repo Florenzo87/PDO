@@ -4,6 +4,7 @@
 #include <limits>
 #include <iostream>
 #include <string>
+#include <cmath>
 #include "SAT.hpp"
 using namespace std;
 
@@ -38,7 +39,11 @@ SAT::SAT(char const * filename)                                                 
                     std::istringstream is(line);
                     int n;
                     while( is >> n ) {
-                         vec.push_back(n);
+                         if (n == 0){
+                         }
+                         else {
+                              vec.push_back(n);
+                         }
                          //cout << n << " ";
                     }
                     Clause cls = Clause(vec);
@@ -72,10 +77,9 @@ bool SAT::verify(){                               //überprüft ob die Besetzung
 int SAT::biggesterror(){                          //findet die grösste Variable die in eine fehlerhafte Klausel ist
      int error = 0;
      for (int i=0; i < clauses; i++){
-          int neuerror = sat[i].biggesterror(belegung);
-          cout << neuerror << endl;
-          if(neuerror > error){
-               error = neuerror;
+          if( sat[i].verify(belegung) == 0){
+               cout << i << " " << error << endl;
+               error = max(error, sat[i].biggesterror(belegung));
           }
      }
      return error;

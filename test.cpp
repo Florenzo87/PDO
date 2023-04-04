@@ -31,11 +31,12 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
                 bool correct = sat.verify();
                 //cout << correct << endl;
                 if(correct == 0){
-                        //cout << "incorrect" << endl;
+                        cout << "incorrect" << endl;
                         sat.set_belegung(i, 1);
                         correct = sat.verify();
-                        //cout << correct << endl;
+                        cout << correct << endl;
                         if(correct == 0){
+                                print(sat.get_belegung());
                                 sat = backtrackingnaiv(sat, i);         //falls weder falsch oder richtig gültig sind, geht es zur nächste besetzung bis er eine richtige findet
                         }
                 }
@@ -48,7 +49,7 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
 SAT backtrackingnaiv(SAT sat, int depth){                               //ruft die nächste Besetzung auf bis es eine gültige findet
         std::vector<int> belegung = sat.get_belegung();
         bool end = last(belegung, depth);
-        while(sat.verify() != true & end == false){
+        while(sat.verify() == 0 & end == 0){
                 //print(sat.get_belegung());
                 std::vector<int> belegung = gggonextimp(sat,depth);
                 sat.set_belegung(belegung);
