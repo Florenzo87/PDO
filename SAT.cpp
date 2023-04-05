@@ -39,9 +39,7 @@ SAT::SAT(char const * filename)                                                 
                     std::istringstream is(line);
                     int n;
                     while( is >> n ) {
-                         if (n == 0){
-                         }
-                         else {
+                         if (n != 0){
                               vec.push_back(n);
                          }
                          //cout << n << " ";
@@ -77,8 +75,8 @@ bool SAT::verify(){                               //überprüft ob die Besetzung
 int SAT::biggesterror(){                          //findet die grösste Variable die in eine fehlerhafte Klausel ist
      int error = 0;
      for (int i=0; i < clauses; i++){
-          if( sat[i].verify(belegung) == 0){
-               cout << i << " " << error << endl;
+          if(sat[i].verify(belegung) == 0){
+               //cout << i << " " << error << endl;
                error = max(error, sat[i].biggesterror(belegung));
           }
      }

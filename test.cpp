@@ -31,10 +31,9 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
                 bool correct = sat.verify();
                 //cout << correct << endl;
                 if(correct == 0){
-                        cout << "incorrect" << endl;
+                        //cout << "incorrect" << endl;
                         sat.set_belegung(i, 1);
                         correct = sat.verify();
-                        cout << correct << endl;
                         if(correct == 0){
                                 print(sat.get_belegung());
                                 sat = backtrackingnaiv(sat, i);         //falls weder falsch oder richtig gültig sind, geht es zur nächste besetzung bis er eine richtige findet
@@ -55,10 +54,10 @@ SAT backtrackingnaiv(SAT sat, int depth){                               //ruft d
                 sat.set_belegung(belegung);
                 end = last(belegung, depth);
                 if (end == true){
-                        cout << "END" << endl;
+                        //cout << "END" << endl;
                 }
                 if (sat.verify() == true){
-                        cout << "TRUE" << endl;
+                        //cout << "TRUE" << endl;
                         break;
                 }
                 print(sat.get_belegung());
@@ -85,20 +84,41 @@ std::vector<int> gggonext(SAT sat, int depth){                          //findet
         return belegung;
 }
 
+std::vector<int> gggonext(std::vector<int> belegung, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
+        for(int i = depth ; i > 0; i--){
+                //cout << belegung[i] << endl;
+                if (belegung[i] == 1){
+                        belegung[i] = 0;
+                }
+                else if (belegung[i] == 0){
+                        belegung[i] = 1;
+                        break;
+                } 
+        }
+        return belegung;
+}
+
 std::vector<int> gggonextimp(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
         std::vector<int> belegung = sat.get_belegung();
         int pos = sat.biggesterror();
-        cout << pos << endl;
-        for(int i = depth ; i > pos-1; i--){
-                //cout << belegung[i] << endl;
+        if(pos != depth){
+                cout << "VAMOSSSSSSSS SE SALTÓ UN PAASSSOOOOOO" << endl;
+        }
+        //cout << pos << endl;
+        //cout << belegung[pos] << endl;
+        for(int i = depth ; i > pos; i--){
+                //cout << "a" << endl;
                 belegung[i] = 0;
-        if (belegung [pos] = 0){
+        }
+        bool checked = false;
+        if (belegung[pos] == 0){
+                //cout << "b" << endl;
                 belegung [pos] = 1;
-                }
-        else if (belegung [pos] = 1){
-                belegung[pos]=0;
-                belegung[pos-1]=1;
-                }
+                checked = true;
+        }
+        if (belegung[pos] == 1 & checked == false){
+                //cout << "c" << endl;
+                belegung = gggonext(belegung, pos);
         }
         return belegung;
 }

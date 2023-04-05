@@ -20,8 +20,7 @@ void Clause::print(){
 
 bool Clause::verify(std::vector<int> belegung){
     bool correct = false;
-    for (int i=0; i < cls.size(); i++){
-        int pos = cls[i];
+    for (int pos : cls){
         if (pos > 0){
             if (belegung[pos] == 1 or belegung[pos] == 2){
                 correct = true;
