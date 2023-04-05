@@ -14,6 +14,7 @@ void print(std::vector<int> vec);
 std::vector<int> gggonext(SAT sat, int depth);
 bool last(std::vector<int> belegung, int depth);
 std::vector<int> gggonextimp(SAT sat, int depth);
+std::vector<int> gggonext(std::vector<int> belegung, int depth);
 
 
 int main () {                                                   //liest text aus den Dokument inst.txt und baut eine SAT Klasse dafür, ruft dann ein backtracking auf um eine Lösung zu finden
