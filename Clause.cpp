@@ -4,8 +4,8 @@
 #include <limits>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "Clause.hpp"
-using namespace std;
 
 Clause::Clause(std::vector<int>& vec){
     cls = vec;
@@ -13,9 +13,9 @@ Clause::Clause(std::vector<int>& vec){
 
 void Clause::print(){
     for (int i=0; i < cls.size(); i++){
-               cout << cls[i] << " ";
+               std::cout << cls[i] << " ";
         }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 bool Clause::verify(std::vector<int> belegung){
@@ -38,7 +38,7 @@ bool Clause::verify(std::vector<int> belegung){
 int Clause::biggesterror(std::vector<int> belegung){
     int error = 0;
     for (int i=0; i < cls.size(); i++){
-        error = max(error, abs(cls[i]));
+        error = std::max(error, abs(cls[i]));
     }
     return error;
 }

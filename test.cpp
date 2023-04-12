@@ -5,16 +5,16 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "SAT.hpp"
-using namespace std;
 
 SAT backtrackingnaiv(SAT sat, int pos);
 std::vector<int> backtracking(SAT sat);
 void print(std::vector<int> vec);
-std::vector<int> gggonext(SAT sat, int depth);
+std::vector<int> next(SAT sat, int depth);
 bool last(std::vector<int> belegung, int depth);
-std::vector<int> gggonextimp(SAT sat, int depth);
-std::vector<int> gggonext(std::vector<int> belegung, int depth);
+std::vector<int> nextimp(SAT sat, int depth);
+std::vector<int> next(std::vector<int> belegung, int depth);
 
 
 int main () {                                                   //liest text aus den Dokument inst.txt und baut eine SAT Klasse dafür, ruft dann ein backtracking auf um eine Lösung zu finden
@@ -30,9 +30,9 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
         for (int i = 0; i < var+1; i++){
                 sat.set_belegung(i, 0);
                 bool correct = sat.verify();
-                //cout << correct << endl;
+                //std::std::cout << correct << std::endl;
                 if(correct == 0){
-                        //cout << "incorrect" << endl;
+                        //std::cout << "incorrect" << std::endl;
                         sat.set_belegung(i, 1);
                         correct = sat.verify();
                         if(correct == 0){
@@ -46,34 +46,34 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
         return sat.get_belegung();
 }
 
-SAT backtrackingnaiv(SAT sat, int depth){                               //ruft die nächste Besetzung auf bis es eine gültige findet
+SAT backtrackingnaiv(SAT sat, int depth){                               //ruft die nächste Besetzung auf bis es eine gültige findet oder es schon alle durchgegangen ist
         std::vector<int> belegung = sat.get_belegung();
         bool end = last(belegung, depth);
         while(sat.verify() == 0 & end == 0){
                 //print(sat.get_belegung());
-                std::vector<int> belegung = gggonextimp(sat,depth);
+                std::vector<int> belegung = nextimp(sat,depth);
                 sat.set_belegung(belegung);
                 end = last(belegung, depth);
                 if (end == true){
-                        //cout << "END" << endl;
+                        //std::cout << "END" << std::endl;
                 }
                 if (sat.verify() == true){
-                        //cout << "TRUE" << endl;
+                        //std::cout << "TRUE" << std::endl;
                         break;
                 }
                 print(sat.get_belegung());
         }
         if (sat.verify() == false){
-        cout << "no solution found" << endl;
+        std::cout << "no solution found" << std::endl;
         }
         return sat;
 }
 
 
-std::vector<int> gggonext(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
+std::vector<int> next(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
         std::vector<int> belegung = sat.get_belegung();
         for(int i = depth ; i > 0; i--){
-                //cout << belegung[i] << endl;
+                //std::cout << belegung[i] << std::endl;
                 if (belegung[i] == 1){
                         belegung[i] = 0;
                 }
@@ -85,9 +85,9 @@ std::vector<int> gggonext(SAT sat, int depth){                          //findet
         return belegung;
 }
 
-std::vector<int> gggonext(std::vector<int> belegung, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
+std::vector<int> next(std::vector<int> belegung, int depth){            //gleich wie oben aber für belegungsvektoren statt SATs
         for(int i = depth ; i > 0; i--){
-                //cout << belegung[i] << endl;
+                //std::cout << belegung[i] << std::endl;
                 if (belegung[i] == 1){
                         belegung[i] = 0;
                 }
@@ -99,27 +99,27 @@ std::vector<int> gggonext(std::vector<int> belegung, int depth){                
         return belegung;
 }
 
-std::vector<int> gggonextimp(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
-        std::vector<int> belegung = sat.get_belegung();
+std::vector<int> nextimp(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
+        std::vector<int> belegung = sat.get_belegung();                    //diese ist die improved version von der obere und schaut sich an welche die größte Variable ist die sich in eine falsche Klausel befindet um nicht durch alle nach diese gehen zu müssen, da man direkt diese verändern kann
         int pos = sat.biggesterror();
         if(pos != depth){
-                cout << "VAMOSSSSSSSS SE SALTÓ UN PAASSSOOOOOO" << endl;
+                std::cout << "es ist besser als der normale" << std::endl;
         }
-        //cout << pos << endl;
-        //cout << belegung[pos] << endl;
+        //std::cout << pos << std::endl;
+        //std::cout << belegung[pos] << std::endl;
         for(int i = depth ; i > pos; i--){
-                //cout << "a" << endl;
+                //std::cout << "a" << std::endl;
                 belegung[i] = 0;
         }
         bool checked = false;
         if (belegung[pos] == 0){
-                //cout << "b" << endl;
+                //std::cout << "b" << std::endl;
                 belegung [pos] = 1;
                 checked = true;
         }
         if (belegung[pos] == 1 & checked == false){
-                //cout << "c" << endl;
-                belegung = gggonext(belegung, pos);
+                //std::cout << "c" << std::endl;
+                belegung = next(belegung, pos);
         }
         return belegung;
 }
@@ -136,8 +136,7 @@ bool last(std::vector<int> belegung, int depth){                        //Funkti
 
 void print(std::vector<int> vec){                               
         for(int i = 0; i < vec.size(); i++){
-                cout << vec[i] << " ";
+                std::cout << vec[i] << " ";
         }
-        cout << endl;
+        std::cout << std::endl;
 }
-

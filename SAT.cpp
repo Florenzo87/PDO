@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <algorithm>
 #include "SAT.hpp"
-using namespace std;
 
 
 
@@ -14,19 +14,19 @@ SAT::SAT(char const * filename)                                                 
 {
      //std::vector<std::vector<int>> sat = {};
      //int var, clauses;
-     string line;
-     ifstream myfile (filename);
+     std::string line;
+     std::ifstream myfile (filename);
      if (myfile.is_open())
      {
           while ( getline (myfile,line) )
           {
                     std::istringstream is(line);
-                    string c;
+                    std::string c;
                     is >> c;
                     if (c == "p"){
-                         string cnf;
+                         std::string cnf;
                          is >> cnf >> var >> clauses;
-                         //cout << var << " " << clauses << endl;
+                         //std::cout << var << " " << clauses << std::endl;
                          break;
                     }
           }
@@ -42,21 +42,21 @@ SAT::SAT(char const * filename)                                                 
                          if (n != 0){
                               vec.push_back(n);
                          }
-                         //cout << n << " ";
+                         //std::cout << n << " ";
                     }
                     Clause cls = Clause(vec);
                     sat.push_back(cls);
-                    //cout << endl;
+                    //std::cout << std::endl;
           }
           myfile.close();
      }
 
-     else cout << "Unable to open file"; 
+     else std::cout << "Unable to open file"; 
 
 }
 
 void SAT::print(){                                //drückt ein SAT Element auf die konsole
-     cout << var << clauses << endl;
+     std::cout << var << clauses << std::endl;
      for (int i=0; i < clauses; i++){
           sat[i].print();
      }
@@ -76,8 +76,8 @@ int SAT::biggesterror(){                          //findet die grösste Variable
      int error = 0;
      for (int i=0; i < clauses; i++){
           if(sat[i].verify(belegung) == 0){
-               //cout << i << " " << error << endl;
-               error = max(error, sat[i].biggesterror(belegung));
+               //std::cout << i << " " << error << std::endl;
+               error = std::max(error, sat[i].biggesterror(belegung));
           }
      }
      return error;
