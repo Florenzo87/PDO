@@ -12,7 +12,7 @@ Clause::Clause(std::vector<int>& vec){
 }
 
 void Clause::print(){
-    for (int i=0; i < cls.size(); i++){
+    for (int i=0; i < int(cls.size()); i++){
                std::cout << cls[i] << " ";
         }
     std::cout << std::endl;
@@ -37,7 +37,7 @@ bool Clause::verify(std::vector<int> belegung){
 
 int Clause::biggesterror(std::vector<int> belegung){
     int error = 0;
-    for (int i=0; i < cls.size(); i++){
+    for (int i=0; i < int(cls.size()); i++){
         error = std::max(error, abs(cls[i]));
     }
     return error;

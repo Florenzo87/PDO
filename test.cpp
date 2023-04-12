@@ -136,7 +136,7 @@ bool last(std::vector<int> belegung, int depth){                        //Funkti
 }
 
 void print(std::vector<int> vec){                               
-        for(int i = 0; i < vec.size(); i++){
+        for(int i = 0; i < int(vec.size()); i++){
                 std::cout << vec[i] << " ";
         }
         std::cout << std::endl;
