@@ -10,7 +10,7 @@ class SAT{
         bool verify();                                      //uberprüft ob die Belegung richtig ist
         int biggesterror();                                 //findet die grösste Variable die in eine fehlerhafte Klausel ist
         void print();                                       //print
-        SAT(char const * filename);                         //baut SAT element aus den Textdokument
+        SAT(std::string filename);                          //baut SAT element aus den Textdokument
         void set_belegung(std::vector<int> neubelegung);    //ganz neue belegung geben 
         void set_belegung(int pos, int val);                //belegung an eine Position ändern
         void set_belegung(int pos);                         //belegung an eine Position ändern (0 ->1, 1 ->0, 2 ->2)

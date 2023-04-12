@@ -17,8 +17,9 @@ std::vector<int> nextimp(SAT sat, int depth);
 std::vector<int> next(std::vector<int> belegung, int depth);
 
 
-int main () {                                                   //liest text aus den Dokument inst.txt und baut eine SAT Klasse dafür, ruft dann ein backtracking auf um eine Lösung zu finden
-        SAT sat1 = SAT("inst.txt");                             //es müsste noch geändert werden damit der Name des Dokuments aus den input kommt
+int main (int argc, char** argv) {                              //liest text aus den gegebenen Dokument und baut eine SAT Klasse dafür, ruft dann ein backtracking auf um eine Lösung zu finden
+        std::string filename = argv[1];
+        SAT sat1 = SAT(filename);
         std::vector<int> losung = backtracking(sat1);
         print(losung);
         return 0;

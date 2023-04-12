@@ -10,7 +10,7 @@
 
 
 
-SAT::SAT(char const * filename)                                                 //baut ein SAT Element durch lesen eines textdokuments
+SAT::SAT(std::string filename)                                                 //baut ein SAT Element durch lesen eines textdokuments
 {
      //std::vector<std::vector<int>> sat = {};
      //int var, clauses;
