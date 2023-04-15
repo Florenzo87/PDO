@@ -28,17 +28,37 @@ int main (int argc, char** argv) {                              //liest text aus
 
 std::vector<int> backtracking(SAT sat){                         //setzt für jede Variable die Besetzung als falsch, falls ein Problem auftritt, versucht es richtig einzusetzen
         int var = sat.variables();
-        for (int i = 0; i < var+1; i++){
-                sat.set_belegung(i, 0);
+        for (int depth = 0; depth < var+1; depth++){
+                sat.set_belegung(depth, 0);
                 bool correct = sat.verify();
                 //std::std::cout << correct << std::endl;
                 if(correct == 0){
                         //std::cout << "incorrect" << std::endl;
-                        sat.set_belegung(i, 1);
+                        sat.set_belegung(depth, 1);
                         correct = sat.verify();
                         if(correct == 0){
                                 print(sat.get_belegung());
-                                sat = backtrackingnaiv(sat, i);         //falls weder falsch oder richtig gültig sind, geht es zur nächste besetzung bis er eine richtige findet
+                                //sat = backtrackingnaiv(sat, i);                               //falls weder falsch oder richtig gültig sind, geht es zur nächste besetzung bis er eine richtige findet
+                                std::vector<int> belegung = sat.get_belegung();
+                                bool end = last(belegung, depth);
+                                while(sat.verify() == 0 && end == 0){
+                                        //print(sat.get_belegung());
+                                        std::vector<int> belegung = nextimp(sat,depth);
+                                        sat.set_belegung(belegung);
+                                        end = last(belegung, depth);
+                                        //if (end == true){
+                                                //std::cout << "END" << std::endl;
+                                        //}
+                                        //if (sat.verify() == true){
+                                                //std::cout << "TRUE" << std::endl;
+                                                //break;
+                                        //}
+                                        print(sat.get_belegung());
+                                }
+                                if (sat.verify() == false){
+                                std::cout << "no solution found" << std::endl;
+                                break;
+                                }                    
                         }
                 }
                 print(sat.get_belegung());
@@ -49,7 +69,7 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
 
 SAT backtrackingnaiv(SAT sat, int depth){                               //ruft die nächste Besetzung auf bis es eine gültige findet oder es schon alle durchgegangen ist
         std::vector<int> belegung = sat.get_belegung();
-        bool end = last(belegung, depth);
+        bool end = last(belegung, depth);                               //legacy code, wurde zur obere funktion addiert
         while(sat.verify() == 0 & end == 0){
                 //print(sat.get_belegung());
                 std::vector<int> belegung = nextimp(sat,depth);
