@@ -43,7 +43,8 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
                                 bool end = last(belegung, depth);
                                 while(sat.verify() == 0 && end == 0){
                                         //print(sat.get_belegung());
-                                        std::vector<int> belegung = nextimp(sat,depth);
+                                        belegung = nextimp(sat,depth);
+                                        depth = belegung[0];
                                         sat.set_belegung(belegung);
                                         end = last(belegung, depth);
                                         //if (end == true){
@@ -130,7 +131,7 @@ std::vector<int> nextimp(SAT sat, int depth){                          //findet 
         //std::cout << belegung[pos] << std::endl;
         for(int i = depth ; i > pos; i--){
                 //std::cout << "a" << std::endl;
-                belegung[i] = 0;
+                belegung[i] = 2;
         }
         bool checked = false;
         if (belegung[pos] == 0){
@@ -142,6 +143,7 @@ std::vector<int> nextimp(SAT sat, int depth){                          //findet 
                 //std::cout << "c" << std::endl;
                 belegung = next(belegung, pos);
         }
+        belegung[0] = pos;
         return belegung;
 }
 
