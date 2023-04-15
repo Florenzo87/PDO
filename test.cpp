@@ -9,16 +9,16 @@
 #include "SAT.hpp"
 
 SAT backtrackingnaiv(SAT sat, int pos);
-std::vector<int> backtracking(SAT sat);
-void print(std::vector<int> vec);
-std::vector<int> next(SAT sat, int depth);
-bool last(std::vector<int> belegung, int depth);
-std::vector<int> nextimp(SAT sat, int depth);
-std::vector<int> next(std::vector<int> belegung, int depth);
+std::vector<int> backtracking(SAT& sat);
+void print(const std::vector<int>& vec);
+std::vector<int> next(const SAT& sat, const int depth);
+bool last(const std::vector<int>& belegung, const int depth);
+void nextimp(SAT& sat, int depth);
+void next(std::vector<int>& belegung, const int depth);
 
 
 int main (int argc, char** argv) {                              //liest text aus den gegebenen Dokument und baut eine SAT Klasse dafür, ruft dann ein backtracking auf um eine Lösung zu finden
-        std::string filename = argv[1];
+        const std::string filename = argv[1];
         SAT sat1 = SAT(filename);
         std::vector<int> losung = backtracking(sat1);
         print(losung);
@@ -26,7 +26,7 @@ int main (int argc, char** argv) {                              //liest text aus
 }
 
 
-std::vector<int> backtracking(SAT sat){                         //setzt für jede Variable die Besetzung als falsch, falls ein Problem auftritt, versucht es richtig einzusetzen
+std::vector<int> backtracking(SAT& sat){                         //setzt für jede Variable die Besetzung als falsch, falls ein Problem auftritt, versucht es richtig einzusetzen
         int var = sat.variables();
         for (int depth = 0; depth < var+1; depth++){
                 sat.set_belegung(depth, 0);
@@ -43,7 +43,8 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
                                 bool end = last(belegung, depth);
                                 while(sat.verify() == 0 && end == 0){
                                         //print(sat.get_belegung());
-                                        belegung = nextimp(sat,depth);
+                                        nextimp(sat,depth);
+                                        belegung = sat.get_belegung();
                                         depth = belegung[0];
                                         sat.set_belegung(belegung);
                                         end = last(belegung, depth);
@@ -68,32 +69,7 @@ std::vector<int> backtracking(SAT sat){                         //setzt für jed
         return sat.get_belegung();
 }
 
-SAT backtrackingnaiv(SAT sat, int depth){                               //ruft die nächste Besetzung auf bis es eine gültige findet oder es schon alle durchgegangen ist
-        std::vector<int> belegung = sat.get_belegung();
-        bool end = last(belegung, depth);                               //legacy code, wurde zur obere funktion addiert
-        while(sat.verify() == 0 & end == 0){
-                //print(sat.get_belegung());
-                std::vector<int> belegung = nextimp(sat,depth);
-                sat.set_belegung(belegung);
-                end = last(belegung, depth);
-                if (end == true){
-                        //std::cout << "END" << std::endl;
-                }
-                if (sat.verify() == true){
-                        //std::cout << "TRUE" << std::endl;
-                        break;
-                }
-                print(sat.get_belegung());
-        }
-        if (sat.verify() == false){
-        std::cout << "no solution found" << std::endl;
-        }
-        return sat;
-}
-
-
-std::vector<int> next(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
-        std::vector<int> belegung = sat.get_belegung();
+void next(std::vector<int>& belegung, const int depth){            //gleich wie oben aber für belegungsvektoren statt SATs
         for(int i = depth ; i > 0; i--){
                 //std::cout << belegung[i] << std::endl;
                 if (belegung[i] == 1){
@@ -104,24 +80,9 @@ std::vector<int> next(SAT sat, int depth){                          //findet die
                         break;
                 } 
         }
-        return belegung;
 }
 
-std::vector<int> next(std::vector<int> belegung, int depth){            //gleich wie oben aber für belegungsvektoren statt SATs
-        for(int i = depth ; i > 0; i--){
-                //std::cout << belegung[i] << std::endl;
-                if (belegung[i] == 1){
-                        belegung[i] = 0;
-                }
-                else if (belegung[i] == 0){
-                        belegung[i] = 1;
-                        break;
-                } 
-        }
-        return belegung;
-}
-
-std::vector<int> nextimp(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
+void nextimp(SAT& sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
         std::vector<int> belegung = sat.get_belegung();                    //diese ist die improved version von der obere und schaut sich an welche die größte Variable ist die sich in eine falsche Klausel befindet um nicht durch alle nach diese gehen zu müssen, da man direkt diese verändern kann
         int pos = sat.backtrack_until();
         //if(pos != depth){
@@ -141,13 +102,13 @@ std::vector<int> nextimp(SAT sat, int depth){                          //findet 
         }
         if (belegung[pos] == 1 & checked == false){
                 //std::cout << "c" << std::endl;
-                belegung = next(belegung, pos);
+                next(belegung, pos);
         }
         belegung[0] = pos;
-        return belegung;
+        sat.set_belegung(belegung);
 }
 
-bool last(std::vector<int> belegung, int depth){                        //Funktion zum überprüfen ob man schon am Ende aller Besetzungen ist
+bool last(const std::vector<int>& belegung, const int depth){                        //Funktion zum überprüfen ob man schon am Ende aller Besetzungen ist
         bool end = true;
         for(int i = 0; i < depth-1; i++){
                 if (belegung[i]==0){
@@ -157,7 +118,7 @@ bool last(std::vector<int> belegung, int depth){                        //Funkti
         return end;
 }
 
-void print(std::vector<int> vec){                               
+void print(const std::vector<int>& vec){                               
         for(int i = 0; i < int(vec.size()); i++){
                 std::cout << vec[i] << " ";
         }

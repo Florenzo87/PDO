@@ -7,20 +7,20 @@
 
 class SAT{
     public:
-        bool verify();                                      //uberprüft ob die Belegung richtig ist
-        int backtrack_until();                              //findet die grösste Variable die in eine fehlerhafte Klausel ist
-        void print();                                       //print
-        SAT(std::string filename);                          //baut SAT element aus den Textdokument
-        void set_belegung(std::vector<int> neubelegung);    //ganz neue belegung geben 
-        void set_belegung(int pos, int val);                //belegung an eine Position ändern
-        void set_belegung(int pos);                         //belegung an eine Position ändern (0 ->1, 1 ->0, 2 ->2)
-        std::vector<int> get_belegung();                    //gibt Belegung zurück
-        int variables();                                    //gibt Anxahl an Variablen zurück
+        bool verify() const;                                    //uberprüft ob die Belegung richtig ist
+        int backtrack_until() const;                            //findet die grösste Variable die in eine fehlerhafte Klausel ist
+        void print() const;                                     //print
+        SAT(const std::string filename);                              //baut SAT element aus den Textdokument
+        void set_belegung(const std::vector<int>& neubelegung);         //ganz neue belegung geben 
+        void set_belegung(const int pos, const int val);                        //belegung an eine Position ändern
+        void set_belegung(const int pos);                             //belegung an eine Position ändern (0 ->1, 1 ->0, 2 ->2)
+        std::vector<int> get_belegung() const;                  //gibt Belegung zurück
+        int variables() const;                                  //gibt Anzahl an Variablen zurück
     
     private:
-        std::vector<Clause> sat;                            //sat ist ein Vektor aus der klasse Clause
+        std::vector<Clause> sat;                      //sat ist ein Vektor aus der klasse Clause
         std::vector<int> belegung;                          //als vector von int 0,1,2 mit 2 als noch nicht belegt/gleichzeitig wahr und falsch
-        int var;                                            //Anzahl an Variablen
-        int clauses;                                        //Anzahl an Klauseln
+        int var;                                      //Anzahl an Variablen
+        int clauses;                                  //Anzahl an Klauseln
     
 };

@@ -10,7 +10,7 @@
 
 
 
-SAT::SAT(std::string filename)                                                 //baut ein SAT Element durch lesen eines textdokuments
+SAT::SAT(const std::string filename)                                               //baut ein SAT Element durch lesen eines textdokuments
 {
      //std::vector<std::vector<int>> sat = {};
      //int var, clauses;
@@ -55,14 +55,14 @@ SAT::SAT(std::string filename)                                                 /
 
 }
 
-void SAT::print(){                                //drückt ein SAT Element auf die konsole
+void SAT::print() const{                                //drückt ein SAT Element auf die konsole
      std::cout << var << clauses << std::endl;
      for (int i=0; i < clauses; i++){
           sat[i].print();
      }
 }
 
-bool SAT::verify(){                               //überprüft ob die Besetzung des SAT gültig ist
+bool SAT::verify() const{                               //überprüft ob die Besetzung des SAT gültig ist
      bool correct = true;
      for (int i=0; i < clauses; i++){
           if(sat[i].verify(belegung) == false){
@@ -72,7 +72,7 @@ bool SAT::verify(){                               //überprüft ob die Besetzung
      return correct;
 }
 
-int SAT::backtrack_until(){                          //findet die kleinste grösste Variable die in eine fehlerhafte Klausel ist
+int SAT::backtrack_until() const{                          //findet die kleinste grösste Variable die in eine fehlerhafte Klausel ist
      int error = var;
      for (int i=0; i < clauses; i++){
           if(sat[i].verify(belegung) == 0){
@@ -83,15 +83,15 @@ int SAT::backtrack_until(){                          //findet die kleinste grös
      return error;
 }
 
-void SAT::set_belegung(std::vector<int> neubelegung){       //ändert die Belegung zum gegebenen Vektor, Achtung muss die richtige Länge haben
+void SAT::set_belegung(const std::vector<int>& neubelegung){       //ändert die Belegung zum gegebenen Vektor, Achtung muss die richtige Länge haben
      belegung = neubelegung;
 }
 
-void SAT::set_belegung(int pos, int val){                   //ändert der Wert der Belegung an der gegebene Stelle zum gegebenen Wert
+void SAT::set_belegung(const int pos, const int val){                   //ändert der Wert der Belegung an der gegebene Stelle zum gegebenen Wert
      belegung[pos] = val;
 }
 
-void SAT::set_belegung(int pos){                            //ändert der Wert der Belegung an der gegebenen Stelle zum entgegengesetztes Wert, 0->1 1->0 2->2
+void SAT::set_belegung(const int pos){                            //ändert der Wert der Belegung an der gegebenen Stelle zum entgegengesetztes Wert, 0->1 1->0 2->2
      if(belegung[pos] == 0){
                belegung[pos] = 1;
      }
@@ -100,10 +100,10 @@ void SAT::set_belegung(int pos){                            //ändert der Wert d
      }
 }
 
-std::vector<int> SAT::get_belegung(){                       //wirft der aktuelle Belegung zurück
+std::vector<int> SAT::get_belegung() const{                       //wirft der aktuelle Belegung zurück
      return belegung;
 }
 
-int SAT::variables(){                                       //wirft der Anzahl an Variablen zurück
+int SAT::variables() const{                                       //wirft der Anzahl an Variablen zurück
      return var;
 }
