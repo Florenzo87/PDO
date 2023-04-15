@@ -88,7 +88,7 @@ bool SAT::verify(const int zuletz_geaenderte_variable) const{                   
 
 bool SAT::verify(const int erste_geaenderte_variable, const int letzte_geaenderte_variable) const{                               //überprüft ob die Besetzung des SAT gültig ist
      bool correct = true;
-     for (int variable = erste_geaenderte_variable; variable < letzte_geaenderte_variable; variable++){
+     for (int variable = erste_geaenderte_variable; variable < letzte_geaenderte_variable+1; variable++){
           for (int i=0; i < int(clauseln_der_variable[variable].size()); i++){
                if(sat[clauseln_der_variable[variable][i]].verify(belegung) == false){
                     correct = false;

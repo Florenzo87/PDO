@@ -37,12 +37,12 @@ std::vector<int> backtracking(SAT& sat){                         //setzt für je
                         sat.set_belegung(depth, 1);
                         correct = sat.verify(depth);
                         if(correct == 0){
-                                print(sat.get_belegung());
+                                //print(sat.get_belegung());
                                 //sat = backtrackingnaiv(sat, i);                               //falls weder falsch oder richtig gültig sind, geht es zur nächste besetzung bis er eine richtige findet
                                 std::vector<int> belegung = sat.get_belegung();
                                 bool end = last(belegung, depth);
                                 int geaendert = depth;
-                                while(sat.verify() == 0 && end == 0){
+                                while(sat.verify(geaendert, depth) == 0 && end == 0){
                                         //print(sat.get_belegung());
                                         geaendert = nextimp(sat,depth);
                                         belegung = sat.get_belegung();
@@ -52,11 +52,11 @@ std::vector<int> backtracking(SAT& sat){                         //setzt für je
                                         //if (end == true){
                                                 //std::cout << "END" << std::endl;
                                         //}
-                                        //if (sat.verify() == true){
+                                        //if (sat.verify(geaendert, depth) == true){
                                                 //std::cout << "TRUE" << std::endl;
                                                 //break;
                                         //}
-                                        print(sat.get_belegung());
+                                        //print(sat.get_belegung());
                                 }
                                 if (sat.verify() == false){
                                 std::cout << "no solution found" << std::endl;
@@ -64,7 +64,7 @@ std::vector<int> backtracking(SAT& sat){                         //setzt für je
                                 }                    
                         }
                 }
-                print(sat.get_belegung());
+                //print(sat.get_belegung());
         }
 
         return sat.get_belegung();
