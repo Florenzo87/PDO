@@ -8,7 +8,7 @@
 class SAT{
     public:
         bool verify();                                      //uberprüft ob die Belegung richtig ist
-        int biggesterror();                                 //findet die grösste Variable die in eine fehlerhafte Klausel ist
+        int backtrack_until();                              //findet die grösste Variable die in eine fehlerhafte Klausel ist
         void print();                                       //print
         SAT(std::string filename);                          //baut SAT element aus den Textdokument
         void set_belegung(std::vector<int> neubelegung);    //ganz neue belegung geben 

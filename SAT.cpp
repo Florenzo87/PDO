@@ -72,12 +72,12 @@ bool SAT::verify(){                               //überprüft ob die Besetzung
      return correct;
 }
 
-int SAT::biggesterror(){                          //findet die grösste Variable die in eine fehlerhafte Klausel ist
-     int error = 0;
+int SAT::backtrack_until(){                          //findet die kleinste grösste Variable die in eine fehlerhafte Klausel ist
+     int error = var;
      for (int i=0; i < clauses; i++){
           if(sat[i].verify(belegung) == 0){
                //std::cout << i << " " << error << std::endl;
-               error = std::max(error, sat[i].biggesterror(belegung));
+               error = std::min(error, sat[i].biggesterror(belegung));
           }
      }
      return error;
