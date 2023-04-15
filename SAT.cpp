@@ -32,7 +32,10 @@ SAT::SAT(const std::string filename)                                            
           }
           for (int i=0; i < var+1; i++){
                belegung.push_back(2);
+               std::vector<int> empty;
+               clauseln_der_variable.push_back(empty);    
           }
+          int clausel = 0;
           while ( getline (myfile,line) )
           {
                     std::vector<int> vec = {};
@@ -41,12 +44,13 @@ SAT::SAT(const std::string filename)                                            
                     while( is >> n ) {
                          if (n != 0){
                               vec.push_back(n);
+                              clauseln_der_variable[std::abs(n)].push_back(clausel);    
                          }
                          //std::cout << n << " ";
                     }
                     Clause cls = Clause(vec);
                     sat.push_back(cls);
-                    //std::cout << std::endl;
+                    clausel += 1;                      
           }
           myfile.close();
      }
@@ -71,6 +75,29 @@ bool SAT::verify() const{                               //überprüft ob die Bes
      }
      return correct;
 }
+
+bool SAT::verify(const int zuletz_geaenderte_variable) const{                               //überprüft ob die Besetzung des SAT gültig ist
+     bool correct = true;
+     for (int i=0; i < int(clauseln_der_variable[zuletz_geaenderte_variable].size()); i++){
+          if(sat[clauseln_der_variable[zuletz_geaenderte_variable][i]].verify(belegung) == false){
+               correct = false;
+          }
+     }
+     return correct;
+}
+
+bool SAT::verify(const int erste_geaenderte_variable, const int letzte_geaenderte_variable) const{                               //überprüft ob die Besetzung des SAT gültig ist
+     bool correct = true;
+     for (int variable = erste_geaenderte_variable; variable < letzte_geaenderte_variable; variable++){
+          for (int i=0; i < int(clauseln_der_variable[variable].size()); i++){
+               if(sat[clauseln_der_variable[variable][i]].verify(belegung) == false){
+                    correct = false;
+               }
+          }
+     }
+     return correct;
+}
+
 
 int SAT::backtrack_until() const{                          //findet die kleinste grösste Variable die in eine fehlerhafte Klausel ist
      int error = var;
