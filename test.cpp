@@ -124,9 +124,9 @@ std::vector<int> next(std::vector<int> belegung, int depth){            //gleich
 std::vector<int> nextimp(SAT sat, int depth){                          //findet die nächste Besetzung abhängig vn der tiefe der Suche und der aktuelle Besetzung
         std::vector<int> belegung = sat.get_belegung();                    //diese ist die improved version von der obere und schaut sich an welche die größte Variable ist die sich in eine falsche Klausel befindet um nicht durch alle nach diese gehen zu müssen, da man direkt diese verändern kann
         int pos = sat.backtrack_until();
-        if(pos != depth){
-                std::cout << "es ist besser als der normale" << std::endl;
-        }
+        //if(pos != depth){
+                //std::cout << "es ist besser als der normale" << std::endl;
+        //}
         //std::cout << pos << std::endl;
         //std::cout << belegung[pos] << std::endl;
         for(int i = depth ; i > pos; i--){
