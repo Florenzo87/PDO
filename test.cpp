@@ -32,17 +32,17 @@ std::vector<int> backtracking(SAT& sat){                         //setzt für je
                 sat.set_belegung(depth, 0);
                 bool correct = sat.verify(depth);
                 //std::std::cout << correct << std::endl;
-                if(correct == 0){
+                if(!correct){
                         //std::cout << "incorrect" << std::endl;
                         sat.set_belegung(depth, 1);
                         correct = sat.verify(depth);
-                        if(correct == 0){
+                        if(!correct){
                                 //print(sat.get_belegung());
                                 //sat = backtrackingnaiv(sat, i);                               //falls weder falsch oder richtig gültig sind, geht es zur nächste besetzung bis er eine richtige findet
                                 std::vector<int> belegung = sat.get_belegung();
                                 bool end = last(belegung, depth);
                                 int geaendert = depth;
-                                while(sat.verify(geaendert, depth) == 0 && end == 0){
+                                while(!sat.verify(geaendert, depth) && !end){
                                         //print(sat.get_belegung());
                                         geaendert = nextimp(sat,depth);
                                         belegung = sat.get_belegung();
@@ -60,7 +60,8 @@ std::vector<int> backtracking(SAT& sat){                         //setzt für je
                                 }
                                 if (sat.verify() == false){
                                 std::cout << "no solution found" << std::endl;
-                                break;
+                                std::vector <int> empty;
+                                return empty;
                                 }                    
                         }
                 }
@@ -99,13 +100,11 @@ int nextimp(SAT& sat, int depth){                          //findet die nächste
                 //std::cout << "a" << std::endl;
                 belegung[i] = 2;
         }
-        bool checked = false;
         if (belegung[pos] == 0){
                 //std::cout << "b" << std::endl;
                 belegung [pos] = 1;
-                checked = true;
         }
-        if (belegung[pos] == 1 && checked == false){
+        else {
                 //std::cout << "c" << std::endl;
                 geaendert = next(belegung, pos);
         }
@@ -115,13 +114,12 @@ int nextimp(SAT& sat, int depth){                          //findet die nächste
 }
 
 bool last(const std::vector<int>& belegung, const int depth){                        //Funktion zum überprüfen ob man schon am Ende aller Besetzungen ist
-        bool end = true;
         for(int i = 0; i < depth-1; i++){
                 if (belegung[i]==0){
-                        end = false;
+                        return false;
                 }
         }
-        return end;
+        return true;
 }
 
 void print(const std::vector<int>& vec){                               

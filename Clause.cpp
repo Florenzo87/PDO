@@ -19,20 +19,19 @@ void Clause::print() const{
 }
 
 bool Clause::verify(const std::vector<int>& belegung) const{
-    bool correct = false;
     for (int pos : cls){
         if (pos > 0){
             if (belegung[pos] == 1 or belegung[pos] == 2){
-                correct = true;
+                return true;
             }
         }
-        if (pos < 0){
+        else {
             if (belegung[-pos] == 0 or belegung[-pos] == 2){
-                correct = true;
+                return true;
             }
         }
     }
-    return correct;
+    return false;
 }
 
 int Clause::biggesterror(const std::vector<int>& belegung) const{
