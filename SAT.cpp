@@ -10,10 +10,8 @@
 
 
 
-SAT::SAT(const std::string filename)                                               //baut ein SAT Element durch lesen eines textdokuments
+SAT::SAT(const std::string filename)                                               
 {
-     //std::vector<std::vector<int>> sat = {};
-     //int var, clauses;
      std::string line;
      std::ifstream myfile (filename);
      if (myfile.is_open())
@@ -26,7 +24,6 @@ SAT::SAT(const std::string filename)                                            
                     if (c == "p"){
                          std::string cnf;
                          is >> cnf >> var >> clauses;
-                         //std::cout << var << " " << clauses << std::endl;
                          break;
                     }
           }
@@ -46,7 +43,6 @@ SAT::SAT(const std::string filename)                                            
                               vec.push_back(n);
                               clauseln_der_variable[std::abs(n)].push_back(clausel);    
                          }
-                         //std::cout << n << " ";
                     }
                     Clause cls = Clause(vec);
                     sat.push_back(cls);
@@ -59,14 +55,14 @@ SAT::SAT(const std::string filename)                                            
 
 }
 
-void SAT::print() const{                                //drückt ein SAT Element auf die konsole
+void SAT::print() const{
      std::cout << var << clauses << std::endl;
      for (int i=0; i < clauses; i++){
           sat[i].print();
      }
 }
 
-bool SAT::verify() const{                               //überprüft ob die Besetzung des SAT gültig ist
+bool SAT::verify() const{                               
      for (int i=0; i < clauses; i++){
           if(sat[i].verify(belegung) == false){
                return false;
@@ -85,22 +81,11 @@ bool SAT::verify(const int zuletz_geaenderte_variable) const{                   
 }
 
 bool SAT::verify(const int erste_geaenderte_variable, const int letzte_geaenderte_variable) const{                               //überprüft ob die Besetzung des SAT gültig ist
-     std::vector<int> checked;
-     //bool check = true;
      for (int variable = erste_geaenderte_variable; variable < letzte_geaenderte_variable+1; variable++){
           for (int i=0; i < int(clauseln_der_variable[variable].size()); i++){
-               //for (int j=0; j<checked.size(); j++){
-                    //if(clauseln_der_variable[variable][i] == checked[j]){
-                         //check = false;
-                    //}
-               //}
-               //if(check = true){
-                    if(sat[clauseln_der_variable[variable][i]].verify(belegung) == false){
-                         return false;
-                    }
-               //}
-               //check = true;
-               checked.push_back(clauseln_der_variable[variable][i]);
+               if(sat[clauseln_der_variable[variable][i]].verify(belegung) == false){
+                    return false;
+               }
           }
      }
      return true;
@@ -111,7 +96,6 @@ int SAT::backtrack_until() const{                          //findet die kleinste
      int error = var;
      for (int i=0; i < clauses; i++){
           if(!sat[i].verify(belegung)){
-               //std::cout << i << " " << error << std::endl;
                error = std::min(error, sat[i].biggesterror(belegung));
           }
      }
