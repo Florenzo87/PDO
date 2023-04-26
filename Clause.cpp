@@ -34,7 +34,7 @@ bool Clause::verify(const std::vector<int>& belegung) const{
     return false;
 }
 
-int Clause::biggesterror(const std::vector<int>& belegung) const{
+int Clause::biggesterror() const{
     int error = 0;
     for (int i=0; i < int(cls.size()); i++){
         error = std::max(error, abs(cls[i]));
