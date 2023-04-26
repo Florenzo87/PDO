@@ -96,7 +96,7 @@ int SAT::backtrack_until() const{                          //findet die kleinste
      int error = var;
      for (int i=0; i < clauses; i++){
           if(!sat[i].verify(belegung)){
-               error = std::min(error, sat[i].biggesterror(belegung));
+               error = std::min(error, sat[i].biggesterror());
           }
      }
      return error;
